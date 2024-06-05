@@ -7,7 +7,7 @@ paths:
     get:
       summary: Get Mercan by ID
       parameters:
-        - name: merchantId
+        - name: id
           in: path
           required: true
           schema:
@@ -55,7 +55,7 @@ paths:
     get:
       summary: Get Gift by ID
       parameters:
-        - name: giftId
+        - name: id
           in: path
           required: true
           schema:
@@ -83,7 +83,7 @@ paths:
     post:
       summary: Redeem Gift
       parameters:
-        - name: giftId
+        - name: id
           in: path
           required: true
           schema:
