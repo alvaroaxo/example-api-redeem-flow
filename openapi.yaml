@@ -1,0 +1,155 @@
+openapi: 3.0.0
+info:
+  title: Gift Redemption Example API
+  version: 1.0.0
+paths:
+  /api/mercans/{id}:
+    get:
+      summary: Get Mercan by ID
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Mercan details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  image:
+                    type: string
+                  redemptionOptions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        redemptionMethod:
+                          type: string
+                        type:
+                          type: string
+                          enum: [PHYSICAL, DIGITAL]
+                        title:
+                          type: string
+                        description:
+                          type: string
+                        fee:
+                          type: integer
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+
+  /api/gifts/{id}:
+    get:
+      summary: Get Gift by ID
+      parameters:
+        - name: giftId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Gift details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  balance:
+                    type: integer
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
+
+  /api/gifts/{id}/redeem:
+    post:
+      summary: Redeem Gift
+      parameters:
+        - name: giftId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    merchantId:
+                      type: string
+                    redemption:
+                      type: object
+                      properties:
+                        redemptionType:
+                          type: string
+                          enum: [PHYSICAL]
+                        fullName:
+                          type: string
+                        address:
+                          type: object
+                          properties:
+                            streetLine:
+                              type: string
+                            secondary:
+                              type: string
+                            state:
+                              type: string
+                            city:
+                              type: string
+                            zipcode:
+                              type: string
+                - type: object
+                  properties:
+                    merchantId:
+                      type: string
+                    redemption:
+                      type: object
+                      properties:
+                        redemptionType:
+                          type: string
+                          enum: [DIGITAL]
+                        fullName:
+                          type: string
+                        email:
+                          type: string
+      responses:
+        200:
+          description: Successful Redemption
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  redemptionId:
+                    type: string
+        400:
+          description: Bad Request
+        404:
+          description: Not Found
+        500:
+          description: Internal Server Error
